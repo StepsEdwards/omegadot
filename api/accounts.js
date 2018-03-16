@@ -15,33 +15,32 @@ router.get('/accounts', (req, res) => {
 });
 
 // Save New Account to Database
-router.post('/account/add', (req, res, next) => {
+router.post('/account/add', (req, res) => {
   let errors = [];
 
   if(!req.body.number)
     errors.push({text: 'Missing Account Number'});
-  
+
   if(errors.length > 0){
     res.send({
       errors: errors
     })
   }
-
-  next();
-
   // Create Account
   const account = new Account({
     name: req.body.name,
     number: req.body.number,
-    category: req.body.category,
+    type: req.body.type,
+    subtype: req.body.subtype,
     balance: req.body.initBalance,
     isActive: req.body.isActive
   });
   // Save Account to Database
-  account.save((err, member) => {
+  account.save((err) => {
     if (err)
-      console.log('ERROR...COULD NOT SAVE TO DATABASE');
-    res.status(201).json(account);
+      console.log('ERROR...COULD NOT SAVE ACCOUNT');
+    else
+      res.status(201).json(account);
   });
 });
 

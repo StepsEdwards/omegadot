@@ -28,25 +28,6 @@ class Accounts extends React.Component {
       .then(accounts => this.setState({ accounts: accounts }, () => console.log('Accounts fetched...', accounts)));
   }
 
-  getTableColumns(){
-    const columns = [
-      {
-        Header: '#',
-        accessor: 'number'
-      },
-      {
-        Header: 'Name',
-        accessor: 'name'
-      },
-      {
-        Header: 'Balance',
-        accessor: 'balance'
-      }
-    ]
-
-    return columns;
-  }
-
   render() {
     return (
       <div className="container text-left mt-5">
@@ -54,11 +35,11 @@ class Accounts extends React.Component {
         <Link to='/accounts/add'>
           <button className="btn btn-primary mb-4">Create Account</button>
         </Link>
-        <ReactTable 
+        <ReactTable
             data={this.state.accounts}
             columns={[
               {
-                Header: '#',
+                Header: 'Account #',
                 accessor: 'number'
               },
               {
@@ -71,7 +52,11 @@ class Accounts extends React.Component {
               },
               {
                 Header: 'Type',
-                accessor: 'category'
+                accessor: 'type'
+              },
+              {
+                Header: "Sub-Type",
+                accessor: 'subtype'
               },
               {
                 Header: 'Status',
@@ -86,10 +71,10 @@ class Accounts extends React.Component {
                   </span>
                 )
               }
-            ]} 
+            ]}
 
             className="-striped -highlight"
-            defaultPageSize={10}           
+            defaultPageSize={10}
         />
       </div>
     )

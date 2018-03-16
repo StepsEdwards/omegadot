@@ -1,4 +1,8 @@
 import React from 'react';
+import {withAlert} from 'react-alert';
+import { bindActionCreators } from 'redux';
+import {loadLog, accountCreated} from "../actions/log";
+import {connect} from "react-redux";
 
 class AddAccount extends React.Component {
   constructor(props) {
@@ -6,17 +10,29 @@ class AddAccount extends React.Component {
     this.state = {
       accounts: [],
       selectedAccount: 'none',
-      selectedAccountType: 'none',
+      accountNumber: '',
+      accountType: '',
+      accountSubType: '',
+      initBalance: '',
       isActive: true
     }
+
+    this.onInitBalanceChange = this.onInitBalanceChange.bind(this);
   }
 
   onAccountChange(e) {
     this.setState({ selectedAccount: e.target.value });
-  }
-
-  onAccountTypeChange(e) {
-    this.setState({ selectedAccountType: e.target.value });
+    const accounts = this.state.accounts;
+    accounts.forEach(account => {
+      if(account.name == e.target.value){
+        this.setState({
+          accountNumber: account.number,
+          accountType: account.type,
+          accountSubType: account.subtype
+        });
+        console.log(`${account.name} ${account.number} ${account.type}`);
+      }
+    });
   }
 
   onActiveChecked(e) {
@@ -34,31 +50,54 @@ class AddAccount extends React.Component {
     console.log(this.state.checked);
   }
 
+  onInitBalanceChange(e){
+    this.setState({initBalance: e.target.value});
+  }
+
   // POST Request For Adding Account To DB
   createAccount(newAccount) {
+    const { logAction, auth } = this.props;
     fetch('/account/add', {
       method: 'POST',
       body: JSON.stringify(newAccount),
       headers: new Headers({
         "Content-Type": "application/json"
       })
-    }).then(res => res.json())
+    })
+      .then((res) => {
+        logAction(newAccount, auth.username);
+        return res.json();
+    })
       .catch(err => console.log(`ERROR MESSAGE ${err}`));
   }
 
   onSubmit(e) {
     e.preventDefault();
+
+    if(this.state.selectedAccount == 'none'){
+      return this.props.alert.error('SELECT AN ACCOUNT');
+    }
+
+    if(Math.sign(this.state.initBalance) === -1 || isNaN(this.state.initBalance)) {
+      return this.props.alert.error('INVALID BALANCE');
+    }
+
     const newAccount = {
       name: this.state.selectedAccount,
-      number: this.refs.accountNumber.value,
-      category: this.state.selectedAccountType,
-      initBalance: this.refs.initBalance.value,
+      number: this.state.accountNumber,
+      type: this.state.accountType,
+      subtype: this.state.accountSubType,
+      initBalance: this.state.initBalance,
       isActive: this.state.isActive
     }
     this.createAccount(newAccount);
-    this.refs.accountNumber.value = '';
-    this.refs.initBalance.value = '';
-    // console.log(newAccount);
+    this.setState({
+      selectedAccount: 'none',
+      accountNumber: '',
+      accountType: '',
+      accountSubType: '',
+      initBalance: ''
+    });
   }
 
   componentDidMount() {
@@ -83,34 +122,48 @@ class AddAccount extends React.Component {
             </div>
             <div className="form-group">
               <label htmlFor="accountNumber">Account Number</label>
-              <input type="text" name="accountNumber" ref="accountNumber" className="form-control" />
+              <input type="text" name="accountNumber" ref="accountNumber" className="form-control" value={this.state.accountNumber} disabled/>
             </div>
             <div className="form-group">
               <label htmlFor="accountType">Account Type</label>
-              <select onChange={this.onAccountTypeChange.bind(this)} value={this.state.selectedAccountType} className="form-control" name="accountType">
-                <option value="None" selected>None</option>
-                <option value="Asset">Asset</option>
-                <option value="Liability">Liability</option>
-                <option value="Revenue">Revenue</option>
-                <option value="Owner's Equity">Owner's Equity</option>
-                <option value="Operating Expense">Operating Expense</option>
-                <option value="Other">Other</option>
-              </select>
+              <input type="text" name="accountType" className="form-control" value={this.state.accountType} disabled/>
+            </div>
+            <div>
+              <label htmlFor="accountSubType">Account Sub-Type</label>
+              <input type="text" name="accountSubType" className="form-control" value={this.state.accountSubType} disabled/>
             </div>
             <div className="form-group">
               <label htmlFor="initialBalance">Initial Balance</label>
-              <input type="text" ref="initBalance" className="form-control" />
+              <input type="text" name="initBalance" className="form-control" onChange={this.onInitBalanceChange} value={this.state.initBalance} placeholder="$0.00"/>
             </div>
             <div className="form-group">
               <input type="checkbox" checked={this.state.isActive} onChange={this.onActiveChecked.bind(this)} name="isActive" className="form-check-input" />
               <label htmlFor="isActive" className="form-check-label">Active</label>
             </div>
             <input type="submit" value="Create" className="btn btn-primary" />
+            <p>{this.state.selectedAccount}</p>
+            <p>{this.state.accountNumber}</p>
+            <p>{this.state.accountType}</p>
+            <p>{this.state.accountSubType}</p>
+            <p>{this.state.isActive}</p>
           </form>
         </div>
       </div>
-    )
+    );
   }
 }
 
-export default AddAccount;
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({
+    logAction: accountCreated,
+  }, dispatch);
+}
+
+function mapStateToProps(state) {
+  return {
+    log: state.log,
+    auth: state.authentication
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withAlert(AddAccount));
