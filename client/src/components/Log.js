@@ -5,6 +5,7 @@ import 'react-bootstrap';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { loadLog } from '../actions/log';
+import _ from "lodash";
 
 class Log extends React.Component {
   constructor(props) {
@@ -76,20 +77,36 @@ class Log extends React.Component {
             console.log(e);
             if (e.row._original.data) {
               return (
-                <div>
+                <div style={{ padding: "20px" }}>
                   { e.row._original.data.description &&
                   <p>Description: {e.row._original.data.description}</p>
                   }
+                  <p>The following credits and debits were applied during this transaction.</p>
                   <ReactTable
                     data={e.row._original.data.debits}
                     columns={[
                       {
-                        Header: 'Account',
-                        accessor: 'account'
+                        Header: 'Accounts',
+                        accessor: 'account',
+                        Cell: row => (
+                          <div className="text-center">
+                            {row.value}
+                          </div>
+                        ),
                       },
                       {
-                        Header: 'Debited',
-                        accessor: 'amount'
+                        Header: 'Debit',
+                        accessor: 'amount',
+                        Cell: row => (
+                          <div className="text-center">
+                            {row.value}
+                          </div>
+                        )
+                      },
+                      {
+                        Header: 'Credit',
+                        id: 'index',
+                        accessor: d => <div className="text-center">-</div>,
                       },
                     ]}
                     defaultPageSize={e.row._original.data.debits.length}
@@ -99,13 +116,29 @@ class Log extends React.Component {
                     data={e.row._original.data.credits}
                     columns={[
                       {
-                        Header: 'Account',
-                        accessor: 'account'
+                        accessor: 'account',
+                        Cell: row => (
+                          <div className="text-center">
+                            {row.value}
+                          </div>
+                        )
                       },
                       {
-                        Header: 'Credited',
-                        accessor: 'amount'
+                        id: 'index',
+                        accessor: d => <div className="text-center">-</div>,
                       },
+                      {
+                        accessor: 'amount',
+                        Cell: row => (
+                          <div className="text-center">
+                            {row.value}
+                          </div>
+                        ),
+                        Footer: (
+                          <span style={{ "border-bottom": "3px double" }}>
+                          </span>
+                        )
+                      }
                     ]}
                     defaultPageSize={e.row._original.data.credits.length}
                     showPaginationBottom={false}
@@ -115,8 +148,8 @@ class Log extends React.Component {
             }
             else if (e.row._original.type == "Account Created") {
               return(
-                <div>
-                  <p>Account name: {e.row._original.name}</p>
+                <div style={{ padding: "20px" }}>
+                  <p>{e.row._original.changedBy} created the <b>{e.row._original.name}</b> account.</p>
                 </div>
               );
             }
