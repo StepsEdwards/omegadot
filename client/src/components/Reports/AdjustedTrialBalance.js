@@ -106,6 +106,7 @@ class AdjustedTrialBalance extends React.Component {
               )
             }
           ]}
+          defaultPageSize={21}
         />
       </div>
     )
