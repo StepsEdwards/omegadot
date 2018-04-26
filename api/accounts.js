@@ -28,6 +28,12 @@ router.get('/accounts/expense', (req, res) => {
     .then(accounts => res.json(accounts));
 });
 
+// Find All Revenue Accounts
+router.get('/accounts/revenue', (req, res) => {
+  Account.find({type: "revenue"})
+    .then(accounts => res.json(accounts));
+});
+
 // Find All Asset Accounts
 router.get('/accounts/asset', (req, res) => {
   Account.find({type: "asset"})

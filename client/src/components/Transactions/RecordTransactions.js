@@ -39,6 +39,8 @@ class RecordTransactions extends React.Component {
             selectedDebitAccount: 'None',
             selectedCreditAccount: 'None',
             redirect: false,
+            expenseAccounts: [],
+            revenueAccounts: []
         }
 
         this.handleChange = this.handleChange.bind(this);
@@ -61,6 +63,7 @@ class RecordTransactions extends React.Component {
         this.setFile = this.setFile.bind(this);
         this.updateTempAccountBalances = this.updateTempAccountBalances.bind(this);
         this.onTransactionTypeChange = this.onTransactionTypeChange.bind(this);
+        this.closeAccounts = this.closeAccounts.bind(this);
     }
 
     handleChange(date) {
@@ -487,11 +490,59 @@ class RecordTransactions extends React.Component {
         }
     }
 
+    closeAccounts(e){
+        e.preventDefault();
+
+        let expenseAccounts = this.state.expenseAccounts;
+        let revenueAccounts = this.state.revenueAccounts;
+        let debitEntries = [];
+        let creditEntries = [];
+
+        // Creating Credit Entries
+        for(let i = 0; i < expenseAccounts.length; i++){
+            let id = i+1;
+            let account = expenseAccounts[i].name;
+            let amount = expenseAccounts[i].debitBalance;
+
+            creditEntries.push(new Entry(id, account, amount));
+        }
+        
+        // Creating Debit Entries
+        for(let i = 0; i < revenueAccounts.length; i++){
+            let id = i+1;
+            let account = revenueAccounts[i].name;
+            let amount = revenueAccounts[i].creditBalance;
+
+            debitEntries.push(new Entry(id, account, amount));
+        }
+
+        const closingTransaction = {
+            debitEntries: debitEntries,
+            creditEntries: creditEntries,
+            date: this.state.date.format("L").toString(),
+            description: "",
+            status: "pending",
+            rejectReason: "",
+            transactionType: "CJE"
+        }
+
+        this.createTransacton(closingTransaction);        
+    }
+
     // LIFECYCLE METHODS
     componentDidMount() {
         fetch('/accounts')
             .then(res => res.json())
             .then(accounts => this.setState({ accounts: accounts }, () => console.log('Accounts fetched...', accounts)));
+
+        fetch('/accounts/expense')
+            .then(res => res.json())
+            .then(accounts => this.setState({ expenseAccounts: accounts }, () => console.log('Expense accounts fetched...', accounts)));
+        
+        fetch('/accounts/revenue')
+            .then(res => res.json())
+            .then(accounts => this.setState({ revenueAccounts: accounts }, () => console.log('Revenue accounts fetched...', accounts)));
+        
     }
 
     render() {
@@ -512,7 +563,7 @@ class RecordTransactions extends React.Component {
                                 <h2>New Transaction</h2>
                             </div>
                             <div className="col-md-4 ml-auto">
-                                <button className="btn btn-danger">Close Accounts</button>
+                                <button onClick={this.closeAccounts} className="btn btn-danger">Close Accounts</button>
                                 <select onChange={this.onTransactionTypeChange} value={this.state.transactionType} className="form-control">
                                     <option selected>REG</option>
                                     <option>AJE</option>
