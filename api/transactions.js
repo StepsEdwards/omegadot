@@ -3,6 +3,305 @@ const mongoose = require('mongoose');
 
 const router = express.Router();
 
+// Stuff for dashboard calculation
+function getCurrentAssetDebits(transactions){
+    let debits = [];
+    let tempTransactions = transactions;
+    tempTransactions.forEach(transaction => {
+        let debitEntries = transaction.debitEntries;
+        debitEntries.forEach(entry => {
+            if(entry.account == "Cash"){
+                entry.date = transaction.date;
+                entry.type = "debit";
+                debits.push(entry);
+            }
+            if(entry.account == "Accounts Receivable"){
+                entry.date = transaction.date;
+                entry.type = "debit";
+                debits.push(entry);
+            }
+            if(entry.account == "Prepaid Rent"){
+                entry.date = transaction.date;
+                entry.type = "debit";
+                debits.push(entry);
+            }
+            if(entry.account == "Prepaid Insurance"){
+                entry.date = transaction.date;
+                entry.type = "debit";
+                debits.push(entry);
+            }
+            if(entry.account == "Supplies"){
+                entry.date = transaction.date;
+                entry.type = "debit";
+                debits.push(entry);
+            }
+        });
+    });
+    
+    debits.forEach(debit => {
+        console.log(`ACCOUNT: ${debit.account} || AMOUNT: ${debit.amount} || DATE: ${debit.date} || TYPE: ${debit.type}`);
+    });
+
+    return debits;
+}
+
+function getCurrentAssetCredits(transactions){
+    let credits = [];
+    let tempTransactions = transactions;
+    tempTransactions.forEach(transaction => {
+        let creditEntries = transaction.creditEntries;
+        creditEntries.forEach(entry => {
+            if(entry.account == "Cash"){
+                entry.date = transaction.date;
+                entry.type = "credit";
+                credits.push(entry);
+            }
+            if(entry.account == "Accounts Receivable"){
+                entry.date = transaction.date;
+                entry.type = "credit";
+                credits.push(entry);
+            }
+            if(entry.account == "Prepaid Rent"){
+                entry.date = transaction.date;
+                entry.type = "credit";
+                credits.push(entry);
+            }
+            if(entry.account == "Prepaid Insurance"){
+                entry.date = transaction.date;
+                entry.type = "credit";
+                credits.push(entry);
+            }
+            if(entry.account == "Supplies"){
+                entry.date = transaction.date;
+                entry.type = "credit";
+                credits.push(entry);
+            }
+        });
+    });
+    
+    credits.forEach(credit => {
+        console.log(`ACCOUNT: ${credit.account} || AMOUNT: ${credit.amount} || DATE: ${credit.date} || TYPE: ${credit.type}`);
+    });
+
+    return credits;
+}
+
+// Stuff for dashboard calculation
+function getTotalAssetDebits(transactions){
+    let debits = [];
+    let tempTransactions = transactions;
+    tempTransactions.forEach(transaction => {
+        let debitEntries = transaction.debitEntries;
+        debitEntries.forEach(entry => {
+            if(entry.account == "Cash"){
+                entry.date = transaction.date;
+                entry.type = "debit";
+                debits.push(entry);
+            }
+            if(entry.account == "Accounts Receivable"){
+                entry.date = transaction.date;
+                entry.type = "debit";
+                debits.push(entry);
+            }
+            if(entry.account == "Prepaid Rent"){
+                entry.date = transaction.date;
+                entry.type = "debit";
+                debits.push(entry);
+            }
+            if(entry.account == "Prepaid Insurance"){
+                entry.date = transaction.date;
+                entry.type = "debit";
+                debits.push(entry);
+            }
+            if(entry.account == "Supplies"){
+                entry.date = transaction.date;
+                entry.type = "debit";
+                debits.push(entry);
+            }
+            if(entry.account == "Office Equipment"){
+                entry.date = transaction.date;
+                entry.type = "debit";
+                debits.push(entry);
+            }
+            if(entry.account == "Accumulated Depreciation"){
+                entry.date = transaction.date;
+                entry.type = "debit";
+                debits.push(entry);
+            }
+        });
+    });
+    
+    debits.forEach(debit => {
+        console.log(`ACCOUNT: ${debit.account} || AMOUNT: ${debit.amount} || DATE: ${debit.date} || TYPE: ${debit.type}`);
+    });
+
+    return debits;
+}
+
+function getTotalAssetCredits(transactions){
+    let credits = [];
+    let tempTransactions = transactions;
+    tempTransactions.forEach(transaction => {
+        let creditEntries = transaction.creditEntries;
+        creditEntries.forEach(entry => {
+            if(entry.account == "Cash"){
+                entry.date = transaction.date;
+                entry.type = "credit";
+                credits.push(entry);
+            }
+            if(entry.account == "Accounts Receivable"){
+                entry.date = transaction.date;
+                entry.type = "credit";
+                credits.push(entry);
+            }
+            if(entry.account == "Prepaid Rent"){
+                entry.date = transaction.date;
+                entry.type = "credit";
+                credits.push(entry);
+            }
+            if(entry.account == "Prepaid Insurance"){
+                entry.date = transaction.date;
+                entry.type = "credit";
+                credits.push(entry);
+            }
+            if(entry.account == "Supplies"){
+                entry.date = transaction.date;
+                entry.type = "credit";
+                credits.push(entry);
+            }
+            if(entry.account == "Office Equipment"){
+                entry.date = transaction.date;
+                entry.type = "credit";
+                credits.push(entry);
+            }
+            if(entry.account == "Accumulated Depreciation"){
+                entry.date = transaction.date;
+                entry.type = "credit";
+                credits.push(entry);
+            }
+        });
+    });
+    
+    credits.forEach(credit => {
+        console.log(`ACCOUNT: ${credit.account} || AMOUNT: ${credit.amount} || DATE: ${credit.date} || TYPE: ${credit.type}`);
+    });
+
+    return credits;
+}
+
+function getInventoryDebits(transactions){
+    let debits = [];
+    let tempTransactions = transactions;
+    tempTransactions.forEach(transaction => {
+        let debitEntries = transaction.debitEntries;
+        debitEntries.forEach(entry => {
+            if(entry.account == "Supplies"){
+                entry.date = transaction.date;
+                entry.type = "debit";
+                debits.push(entry);
+            }
+        });
+    });
+    
+    debits.forEach(debit => {
+        console.log(`ACCOUNT: ${debit.account} || AMOUNT: ${debit.amount} || DATE: ${debit.date} || TYPE: ${debit.type}`);
+    });
+
+    return debits;
+}
+
+function getInventoryCredits(transactions){
+    let credits = [];
+    let tempTransactions = transactions;
+    tempTransactions.forEach(transaction => {
+        let creditEntries = transaction.creditEntries;
+        creditEntries.forEach(entry => {
+            if(entry.account == "Supplies"){
+                entry.date = transaction.date;
+                entry.type = "credit";
+                credits.push(entry);
+            }
+        });
+    });
+    
+    credits.forEach(credit => {
+        console.log(`ACCOUNT: ${credit.account} || AMOUNT: ${credit.amount} || DATE: ${credit.date} || TYPE: ${credit.type}`);
+    });
+
+    return credits;
+}
+
+function getCurrentLiabailitiesDebits(transactions){
+    let debits = [];
+    let tempTransactions = transactions;
+    tempTransactions.forEach(transaction => {
+        let debitEntries = transaction.debitEntries;
+        debitEntries.forEach(entry => {
+            if(entry.account == "Accounts Payable"){
+                entry.date = transaction.date;
+                entry.type = "debit";
+                debits.push(entry);
+            }
+            if(entry.account == "Salaries Payable"){
+                entry.date = transaction.date;
+                entry.type = "debit";
+                debits.push(entry);
+            }
+        });
+    });
+    
+    debits.forEach(debit => {
+        console.log(`ACCOUNT: ${debit.account} || AMOUNT: ${debit.amount} || DATE: ${debit.date} || TYPE: ${debit.type}`);
+    });
+
+    return debits;
+}
+
+function getCurrentLiabailitiesCredits(transactions){
+    let credits = [];
+    let tempTransactions = transactions;
+    tempTransactions.forEach(transaction => {
+        let creditEntries = transaction.creditEntries;
+        creditEntries.forEach(entry => {
+            if(entry.account == "Accounts Payable"){
+                entry.date = transaction.date;
+                entry.type = "credit";
+                credits.push(entry);
+            }
+            if(entry.account == "Salaries Payable"){
+                entry.date = transaction.date;
+                entry.type = "credit";
+                credits.push(entry);
+            }
+        });
+    });
+    
+    credits.forEach(credit => {
+        console.log(`ACCOUNT: ${credit.account} || AMOUNT: ${credit.amount} || DATE: ${credit.date} || TYPE: ${credit.type}`);
+    });
+
+    return credits;
+}
+
+function calculateBalance(data){
+    let debitTotal = 0;
+    let creditTotal = 0;
+
+    for(let i = 0; i < data.length; i++){
+        if(data[i].type == "debit"){
+            debitTotal += data[i].amount;
+        } else if(data[i].type == "credit"){
+            creditTotal += data[i].amount;
+        }
+    }
+
+    let balance = Math.abs(debitTotal - creditTotal);
+    console.log(`BALANCE: ${balance}`);
+    return balance;
+}
+
+
+
 // Import Account Model
 require('../models/Transaction');
 const Transaction = mongoose.model('transaction');
@@ -30,6 +329,43 @@ router.get('/transactions/approved', (req, res) => {
         status: 'approved'
     }).then(transactions => {
         res.json(transactions);
+    })
+});
+
+router.get('/transactions/assetsbalance', (req, res) => {
+    Transaction.find({
+        status: 'approved'
+    }).then(transactions => {
+        let data = getCurrentAssetDebits(transactions).concat(getCurrentAssetCredits(transactions));
+        res.json(calculateBalance(data));
+    })
+});
+
+
+router.get('/transactions/totalassetsbalance', (req, res) => {
+    Transaction.find({
+        status: 'approved'
+    }).then(transactions => {
+        let data = getTotalAssetDebits(transactions).concat(getTotalAssetCredits(transactions));
+        res.json(calculateBalance(data));
+    })
+});
+
+router.get('/transactions/inventorybalance', (req, res) => {
+    Transaction.find({
+        status: 'approved'
+    }).then(transactions => {
+        let data = getInventoryDebits(transactions).concat(getInventoryCredits(transactions));
+        res.json(calculateBalance(data));
+    })
+});
+
+router.get('/transactions/liabilitiesbalance', (req, res) => {
+    Transaction.find({
+        status: 'approved'
+    }).then(transactions => {
+        let data = getCurrentLiabailitiesDebits(transactions).concat(getCurrentLiabailitiesCredits(transactions));
+        res.json(calculateBalance(data));
     })
 });
 
