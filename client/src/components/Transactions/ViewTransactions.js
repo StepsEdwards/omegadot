@@ -29,6 +29,7 @@ class ViewTransactions extends React.Component {
       <div className="container">
         <h2>TRANSACTIONS</h2>
         <ReactTable
+          filterable
           data={this.state.transactions}
           columns={[
             {

@@ -257,6 +257,24 @@ class RecordTransactions extends React.Component {
         }
     }
 
+    namesExisit(){
+        let debits = this.state.debitEntries;
+        for(let i = 0; i < debits.length; i++){
+            if((debits[i].account == "None" || debits[i].account == "")){
+                // return this.props.alert.error("Amount Must Be A Number");
+                return "Don't leave any account names blank!";
+            }
+        }
+
+        let credits = this.state.creditEntries;
+        for(let i = 0; i < credits.length; i++){
+            if((credits[i].account == "None" || credits[i].account == "")){
+                // return this.props.alert.error("Amount Must Be A Number");
+                return "Don't leave any account names blank!";
+            }
+        }
+    }
+
     accountIsSelected(){
         let debits = this.state.debitEntries;
         for(let i = 0; i < debits.length; i++){
@@ -362,6 +380,16 @@ class RecordTransactions extends React.Component {
             // errors.push(this.debitsEqualCredits());
             // return;
         }
+        if(this.namesExisit()){
+            let error = {
+                num: errorNum,
+                error: this.namesExisit()
+            }
+            errors.push(error);
+            errorNum += 1;
+            // errors.push(this.debitsEqualCredits());
+            // return;
+        }
         if(errors.length >= 1){
             console.log(errors);
             this.props.alert.error(<div>
@@ -371,6 +399,7 @@ class RecordTransactions extends React.Component {
                     ); 
                 })}
             </div>);
+            return;
         }
 
         var reader = new FileReader();

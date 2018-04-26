@@ -1,6 +1,12 @@
 import React from 'react';
 import ReactTable from 'react-table';
 
+import { bindActionCreators } from 'redux';
+import {connect} from "react-redux";
+
+import {transactionApproved} from "../../actions/log";
+
+
 class ReviewTransactions extends React.Component{
     constructor(props){
         super(props);
@@ -39,11 +45,13 @@ class ReviewTransactions extends React.Component{
 
     updateStatus = (id) => (e) => {
         e.preventDefault();
-
+        const { logAction, auth } = this.props;
+        
         console.log(`TRANSACTION ID: ${id}`);
         fetch(`/transaction/${id}`)
             .then(res => res.json())
             .then(transaction => {
+                logAction(transaction, auth.username);
                 this.setState({
                     tempDebits: transaction.debitEntries,
                     tempCredits: transaction.creditEntries
@@ -181,8 +189,6 @@ class ReviewTransactions extends React.Component{
     }
 }
 
-export default ReviewTransactions;
-
 function DisplayAccounts(props){
     return (
         <div>
@@ -306,3 +312,17 @@ function AcceptReject(props){
         </div>
     )
 }
+
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+      logAction: transactionApproved,
+    }, dispatch);
+  }
+  function mapStateToProps(state) {
+    return {
+      log: state.log,
+      auth: state.authentication
+    };
+  }
+  
+  export default connect(mapStateToProps, mapDispatchToProps)(ReviewTransactions);

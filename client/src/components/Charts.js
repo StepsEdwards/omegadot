@@ -77,7 +77,7 @@ class Charts extends React.Component {
         <Card>
           <CardTitle>Assets</CardTitle>
           <PieChart width={500} height={400}>
-            <Pie startAngle={180} endAngle={0} data={this.state.turnoverAssetData} cx={260} cy={260} outerRadius={200} fill={this.state.turnoverColor} labelLine={false} label={renderCustomizedLabel}/>
+            <Pie startAngle={180} endAngle={0} data={this.state.turnoverAssetData} cx={260} cy={260} outerRadius={200} fill='#999900' labelLine={false} label={renderCustomizedLabel}/>
             <Tooltip />
           </PieChart>
         </Card>
@@ -88,7 +88,7 @@ class Charts extends React.Component {
         <Card>
           <CardTitle>Current Ratio</CardTitle>
           <PieChart width={500} height={400}>
-            <Pie startAngle={180} endAngle={0} data={this.state.turnoverAssetData} cx={260} cy={260} outerRadius={200} fill={this.state.turnoverColor} labelLine={false} label={renderCustomizedLabel}/>
+            <Pie startAngle={180} endAngle={0} data={this.state.turnoverAssetData} cx={260} cy={260} outerRadius={200} fill='#999900' labelLine={false} label={renderCustomizedLabel}/>
             <Tooltip />
           </PieChart>
         </Card>
@@ -97,7 +97,7 @@ class Charts extends React.Component {
         <Card>
           <CardTitle>Quick Ratio</CardTitle>
           <PieChart width={500} height={400}>
-            <Pie startAngle={180} endAngle={0} data={this.state.turnoverAssetData} cx={260} cy={260} outerRadius={200} fill={this.state.turnoverColor} labelLine={false} label={renderCustomizedLabel}/>
+            <Pie startAngle={180} endAngle={0} data={this.state.turnoverAssetData} cx={260} cy={260} outerRadius={200} fill='#7f0000' labelLine={false} label={renderCustomizedLabel}/>
             <Tooltip />
           </PieChart>
         </Card>

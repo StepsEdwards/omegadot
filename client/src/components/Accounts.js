@@ -35,6 +35,7 @@ class Accounts extends React.Component {
           <button className="btn btn-primary mb-4">Create Account</button>
         </Link>
         <ReactTable
+            filterable
             data={this.state.accounts}
             columns={[
               {
